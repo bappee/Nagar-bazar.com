@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        h1{
+            text-align: center;
+            color: yellow;
+            background-color: black;
+            padding: 5px;
+        }
+        nav a{
+            margin-left: 15px;
+            color: azure;
+
+        }
+
+        nav{
+           
+            position: sticky;
+            top: 3px;
+            background-color:black;
+            padding: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .shop{
+            display: flex;
+            background-color: blanchedalmond;
+            flex: 4;
+            
+        }
+       
+       .pic-size img{
+           width: 80px;
+           height: 80px;
+       }
+       .pic-size p{
+           font-size: 13px;
+           margin-left: 20px;
+         
+       }
+
+       .container{
+           display: flex;
+        
+       }
+       .cart{
+           flex: 4;
+           border-left: 1px solid red;
+           margin-left: 10px;
+           background-color: coral;
+           overflow: auto;
+       }
+
+       .cart p{
+           margin-left: 5px;
+       }
+       .btn{
+           background-color: yellow;
+           
+           padding: 5px;
+           border-radius: 10px;
+           margin-left: 10px;
+           font-size: 13px;
+       }
+       .form{
+           display: none;
+           padding: 5px;
+           border: 1px solid black;
+           box-shadow: 5px 5px 10px gray;
+          
+       }
+       .form input{
+           width: 170px;
+       }
+
+       .cartCount{
+           margin-right: 50px;
+           float: right;
+       }
+
+       
+    </style>
+</head>
+<body>
+    <h1>Welcome to Nagar Bazar</h1>
+
+    <nav>
+        <a href="Home">Home</a>
+        <a href="Fish">Fish</a>
+        <a href="Grocery">Grocery</a>
+        <a href="Medicine">Medicine</a>
+        <a href="vegetables"Vegetables></a>
+        <a href="About">About</a>
+        <a class="cartCount"  href="">Cart:<span id="cc" ><b> </b></span></a>
+    
+    </nav>
+
+    <div class="container">
+            <div class="shop">
+                <div class="pic-size" >
+                    <img src="images/bags/bag-1.png" alt="">
+                    <p id="price">Red bag <br> <span id="number1">520</span></p>
+                    <button id="button"  class="btn" >Add to Cart</button>
+                </div>
+                <div class="pic-size" >
+                    <img src="images/shoes/shoe-2.png" alt="">
+                    <p id="price2">Shoe <br> <span id="number2">1220</span></p>
+                    <button id="button2" class=" btn">Add to Cart</button>
+                </div>     
+           </div>
+
+
+          <div class="cart">
+              <p>Order Summary</p>
+              <ol id="order"></ol> <br> <br><br>
+
+             <p> Sub Total: <span id="sum"></span></p>
+             <p>Delivery charge  <span id="charge"></span></p>
+             <p>Total: <span id="total"></span></p>
+             <button id="orginalOrder">Submit Order</button>
+              <h6 id='show' ></h6>
+
+            <div class="form" id="frm">
+               <h5>Your order Form</h5>
+               <input type="text" name="" id="" placeholder="Your name"> <br> <br>
+               <input type="text" name="" id="" placeholder="Mobile Number"><br> <br>
+               <input type="text" name="" id="" placeholder="Block No"><br> <br>
+               <button id="msg">Order Place</button>
+             </div>
+
+        </div>
+   
+    
+    </div>
+    
+
+<script>
+   var orderProduct =[];
+   var totalNumber=[];
+   
+
+
+    document.getElementById("button").addEventListener('click',function(){
+        var order= document.getElementById('order')
+        var price= document.getElementById('price')
+        var Number1 =document.getElementById('number1')
+       
+        totalNumber.push(Number1.innerHTML);
+        console.log(totalNumber);
+        
+        
+        orderProduct.push(price.innerHTML);
+        localStorage.setItem("arry",orderProduct)
+       
+        showOrder();
+        count();
+        sumAarry();
+        delivaryBill();
+        totalValue();
+    })
+    
+    document.getElementById("button2").addEventListener('click',function(){
+        var order= document.getElementById('order')
+        var price2= document.getElementById('price2')
+        var Number2 =document.getElementById('number2')
+        orderProduct.push(price2.innerHTML)
+        totalNumber.push(Number2.innerHTML);
+        localStorage.setItem("arry",orderProduct)
+        console.log(totalNumber);
+
+        
+        showOrder();
+        count();
+        sumAarry();
+        delivaryBill();
+        totalValue();
+       
+    })
+    
+    function showOrder(){
+            order.innerHTML='';
+            var product = localStorage.getItem('arry')
+           orderProduct.forEach(function (item){
+           order.innerHTML+= "<li> " +item+" </li>";
+
+      
+       console.log(product);
+          
+           })
+    }
+
+    document.getElementById('orginalOrder').addEventListener('click',function(){
+        var show= document.getElementById('show')
+        var items= orderProduct
+        show.innerHTML=items;
+       var appear= document.getElementById('frm')
+       appear.style.display ='block'
+        
+    })
+
+     document.getElementById('msg').addEventListener('click',function(){
+         alert('Thank you .Your order is Successful')
+     })
+    
+    function count(){
+        var orderNumbers =document.getElementById('cc')
+    var length =orderProduct.length
+    orderNumbers.innerHTML=length;
+    }
+
+    function sumAarry(){
+       // var arraySum= totalNumber.reduce((total,current)=>total + current,0);
+   var arrayNumber=totalNumber.reduce(function(prev,cur){
+       return(Number(prev) ||0)  + (Number(cur) || 0);
+      
+   })
+ 
+   var Sum =document.getElementById('sum');
+   Sum.innerHTML=arrayNumber;
+
+   console.log(arrayNumber);
+ console.log(totalNumber);
+    }
+
+    function delivaryBill(){
+        var delivary = document.getElementById('charge')
+        var delivary2=0;
+        if(totalNumber>=10)
+        delivary2= 20;
+        
+        else{
+            delivary2=20;
+        }
+
+
+      delivary.innerHTML= delivary2;
+        console.log(delivary2);
+
+        
+    }
+
+    function totalValue(){
+        var delivary = document.getElementById('charge').innerText
+       var delivaryNumber= parseFloat(delivary)
+      var  Sum =document.getElementById('sum').innerText
+      var SumNumber= parseFloat(Sum);
+
+        var total =document.getElementById('total')
+        var value= SumNumber+delivaryNumber;
+
+        total.innerHTML=value;
+        console.log(value);
+        
+    
+    }
+       
+    
+
+
+
+   
+</script>
+
+
+</body>
+</html>
