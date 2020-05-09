@@ -19,7 +19,7 @@ app.post('/orderPlaced',(req,res)=>{
 
   client.connect(err => {
     const collection = client.db("Nbazar").collection("orders");
-    collection.insertOne(orderedMan,(err,result)=>{
+    collection.insert(orderedMan,(err,result)=>{
        if(err){
            console.log(err)
        }
