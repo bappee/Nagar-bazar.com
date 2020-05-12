@@ -16,7 +16,8 @@ app.post('/orderPlaced',(req,res)=>{
   const orderedMan = req.body;
   orderedMan.orderTime= new Date();
   console.log(orderedMan);
-
+  
+  client = new MongoClient(uri, { useNewUrlParser: true });
   client.connect(err => {
     const collection = client.db("Nbazar").collection("orders");
     collection.insertOne(orderedMan,(err,result)=>{
@@ -29,7 +30,7 @@ app.post('/orderPlaced',(req,res)=>{
        }
             
    })
-   
+   client.close();
   });
    
 })
